@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { resultTabView, resultViewDuration } from "./analytics.js";
 import {
   Bar,
   BarChart,
@@ -56,7 +57,23 @@ export default function ModuleResult({ sessionId, activeKey, cachedResult, onClo
   const [err, setErr] = useState(null);
   const [tab, setTab] = useState("summary");
   const wrapRef = useRef(null);
-  const onTabKey = useArrowTabs(RESULT_TABS, tab, setTab);
+  const openedAt = useRef(performance.now());
+
+  // Track tab switches
+  const handleTab = useCallback((next) => {
+    setTab(next);
+    resultTabView(activeKey, next);
+  }, [activeKey]);
+
+  const onTabKey = useArrowTabs(RESULT_TABS, tab, handleTab);
+
+  // Track view duration on close/unmount
+  useEffect(() => {
+    openedAt.current = performance.now();
+    return () => {
+      resultViewDuration(activeKey, performance.now() - openedAt.current);
+    };
+  }, [activeKey]);
 
   useEffect(() => {
     setErr(null);
@@ -158,7 +175,7 @@ export default function ModuleResult({ sessionId, activeKey, cachedResult, onClo
             aria-selected={tab === id}
             tabIndex={tab === id ? 0 : -1}
             className={tab === id ? "active" : ""}
-            onClick={() => setTab(id)}
+            onClick={() => handleTab(id)}
             onKeyDown={onTabKey}
           >
             {t(`result.tab.${id}`)}

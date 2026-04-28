@@ -56,3 +56,14 @@ export function langChange(lang) {
 export function sessionDrop() {
   track("session_drop", {});
 }
+
+export function resultTabView(moduleKey, tab) {
+  track("result_tab_view", { module_key: moduleKey, tab });
+}
+
+export function resultViewDuration(moduleKey, durationMs) {
+  track("result_view_duration", {
+    module_key: moduleKey,
+    duration_ms: Math.round(durationMs),
+  });
+}
