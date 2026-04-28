@@ -3,7 +3,7 @@
 Analyze your Claude.ai conversation exports — entirely in your browser.
 No server, no data upload. Everything runs locally via [Pyodide](https://pyodide.org/) + [DuckDB-WASM](https://duckdb.org/docs/api/wasm).
 
-**[Live Demo →](https://claude-conversations.pages.dev)**
+**[Live Demo →](https://claude-conversation-analyzer.pages.dev)**
 
 ## How it works
 
