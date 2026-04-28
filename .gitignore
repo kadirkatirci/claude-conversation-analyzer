@@ -1,0 +1,23 @@
+# Build output
+frontend/dist/
+node_modules/
+
+# Python (local analysis scripts)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
+!.env.example

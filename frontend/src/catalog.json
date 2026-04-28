@@ -1,0 +1,193 @@
+{
+  "modules": [
+    {
+      "key": "m01",
+      "slug": "01-conversation-length",
+      "group": "scale",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Konuşma uzunluğu dağılımı",
+        "en": "Conversation length distribution"
+      },
+      "summary": {
+        "tr": "Her konuşmada kaç mesaj, ne kadar karakter/token var? Uzun kuyruğun şekli.",
+        "en": "Messages, characters and tokens per conversation; shape of the long tail."
+      }
+    },
+    {
+      "key": "m02",
+      "slug": "02-message-length",
+      "group": "scale",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Mesaj uzunluğu dağılımı",
+        "en": "Message length distribution"
+      },
+      "summary": {
+        "tr": "Human prompt vs asistan cevabı — karakter ve token dağılımı.",
+        "en": "Human prompt vs assistant reply — character and token distributions."
+      }
+    },
+    {
+      "key": "m03",
+      "slug": "03-thinking-usage",
+      "group": "scale",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Thinking bloğu kullanımı",
+        "en": "Thinking block usage"
+      },
+      "summary": {
+        "tr": "Kaç konuşmada thinking var? Thinking uzunluğu cevap uzunluğuyla nasıl ilişkili?",
+        "en": "How often thinking blocks appear; their length vs reply length."
+      }
+    },
+    {
+      "key": "m04",
+      "slug": "04-activity-rhythm",
+      "group": "time",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Aktivite ritmi (saat/gün/hafta)",
+        "en": "Activity rhythm (hour / day / week)"
+      },
+      "summary": {
+        "tr": "Yerel saat dilimine çevrilmiş kullanım profili.",
+        "en": "Usage profile in the local timezone — hour, weekday, week."
+      }
+    },
+    {
+      "key": "m05",
+      "slug": "05-tool-intensity",
+      "group": "tool",
+      "est_seconds": 3,
+      "title": {
+        "tr": "Tool çağrısı yoğunluğu",
+        "en": "Tool-call intensity"
+      },
+      "summary": {
+        "tr": "Hangi tool'lar ne sıklıkla çağrıldı? Aylık trend ve konuşma-başı profil.",
+        "en": "Which tools fire how often; monthly trend and per-conversation profile."
+      }
+    },
+    {
+      "key": "m06",
+      "slug": "06-conversation-lifetime",
+      "group": "time",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Konuşma ömrü",
+        "en": "Conversation lifetime"
+      },
+      "summary": {
+        "tr": "İlk mesajdan son mesaja ne kadar süre geçti? Kısa vs uzun konuşmalar.",
+        "en": "Elapsed time from first to last message; short vs long conversations."
+      }
+    },
+    {
+      "key": "m07",
+      "slug": "07-attachments-files",
+      "group": "content",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Attachment & file kullanımı",
+        "en": "Attachments & files"
+      },
+      "summary": {
+        "tr": "Dosya/ek paylaşım oranı zamanla nasıl değişti?",
+        "en": "How file and attachment sharing rates evolved over time."
+      }
+    },
+    {
+      "key": "m08",
+      "slug": "08-projects-docs",
+      "group": "content",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Project & knowledge docs",
+        "en": "Projects & knowledge docs"
+      },
+      "summary": {
+        "tr": "Proje sayıları, doc uzunlukları, prompt_template dağılımı.",
+        "en": "Project counts, doc lengths, prompt_template distribution."
+      }
+    },
+    {
+      "key": "m09",
+      "slug": "09-artifact-profile",
+      "group": "tool",
+      "est_seconds": 3,
+      "title": {
+        "tr": "Artifact üretim profili",
+        "en": "Artifact production profile"
+      },
+      "summary": {
+        "tr": "Artifact tipleri, iterasyon oranı, artifact'li vs artifact'sız konuşmalar.",
+        "en": "Artifact types, iteration rate, conversations with vs without artifacts."
+      }
+    },
+    {
+      "key": "m10",
+      "slug": "10-code-blocks",
+      "group": "tool",
+      "est_seconds": 3,
+      "title": {
+        "tr": "Kod bloğu profili",
+        "en": "Code block profile"
+      },
+      "summary": {
+        "tr": "Fenced block sayısı/dili, inline backtick, human vs asistan asimetrisi.",
+        "en": "Fenced blocks and languages, inline backticks, human vs assistant asymmetry."
+      }
+    },
+    {
+      "key": "m11",
+      "slug": "11-citations",
+      "group": "content",
+      "est_seconds": 2,
+      "title": {
+        "tr": "Citation ve kaynak profili",
+        "en": "Citations & source profile"
+      },
+      "summary": {
+        "tr": "web_search citation'lar, domain dağılımı, tool çağrı × citation ilişkisi.",
+        "en": "web_search citations, domain distribution, tool-call × citation relation."
+      }
+    },
+    {
+      "key": "m12",
+      "slug": "12-tool-errors",
+      "group": "tool",
+      "est_seconds": 3,
+      "title": {
+        "tr": "Tool hata tipolojisi",
+        "en": "Tool error typology"
+      },
+      "summary": {
+        "tr": "Tool başına hata oranı, 10 hata kategorisi, hata sonrası kullanıcı davranışı.",
+        "en": "Per-tool error rate, error categories, user behaviour after an error."
+      }
+    },
+    {
+      "key": "m13",
+      "slug": "13-interventions",
+      "group": "intervention",
+      "est_seconds": 3,
+      "title": {
+        "tr": "Konuşma müdahaleleri",
+        "en": "Conversation interventions"
+      },
+      "summary": {
+        "tr": "Prompt yeniden yazma (edit), cevap yeniden üretme (retry), in-place edit, çok-root.",
+        "en": "Prompt edit (human fork), regenerate (assistant fork), in-place edit, multi-root."
+      }
+    }
+  ],
+  "groups": [
+    "scale",
+    "time",
+    "tool",
+    "content",
+    "intervention"
+  ]
+}
