@@ -20,6 +20,7 @@ import {
 } from "./runtime.jsx";
 import "./ui.css";
 import { createLocalAPI } from "./api-local.js";
+import * as analytics from "./analytics.js";
 import PyodideLoader from "./pyodide-loader.jsx";
 import AnalysisWorker from "./worker.js?worker";
 
@@ -52,10 +53,12 @@ function getAPI() {
   if (_api) return { api: _api, worker: _worker, promise: _initPromise };
   _worker = new AnalysisWorker();
   _api = createLocalAPI(_worker);
+  const t0 = performance.now();
   _initPromise = new Promise((resolve, reject) => {
     const handler = (e) => {
       if (e.data.type === "init_ready") {
         _worker.removeEventListener("message", handler);
+        analytics.engineLoaded(performance.now() - t0);
         resolve();
       } else if (e.data.type === "error") {
         _worker.removeEventListener("message", handler);
@@ -201,9 +204,19 @@ function Uploader({ onSession }) {
     setErr(null);
     setBusy(true);
     setProgress({ pct: 0, stage: null });
+    const t0 = performance.now();
     try {
-      onSession(await _api.uploadZip(file, setProgress));
+      const result = await _api.uploadZip(file, setProgress);
+      const ov = result.overview?.scope || {};
+      analytics.zipUploaded({
+        fileSizeMb: +(file.size / 1048576).toFixed(1),
+        conversations: ov.conversations || 0,
+        messages: ov.messages || 0,
+        durationMs: performance.now() - t0,
+      });
+      onSession(result);
     } catch (e) {
+      analytics.zipError(e.message || e, progress.stage);
       setErr(String(e.message || e));
     } finally {
       setBusy(false);
@@ -597,12 +610,15 @@ function ModuleGrid({ modules, session, groupFilter, onSessionRefresh }) {
     runningRef.current = mod.key;
     setRunningKey(mod.key);
     setErrors((e) => ({ ...e, [mod.key]: null }));
+    const t0 = performance.now();
     try {
       const result = await _api.runModule(session.session_id, mod.key);
+      analytics.moduleRun(mod.key, mod.group, performance.now() - t0);
       setResultCache((c) => ({ ...c, [mod.key]: result }));
       setActiveKey(mod.key);
       onSessionRefresh?.();
     } catch (e) {
+      analytics.moduleError(mod.key, e.message || e);
       setErrors((x) => ({ ...x, [mod.key]: String(e.message || e) }));
     } finally {
       runningRef.current = null;
@@ -830,6 +846,7 @@ function App() {
 
   const handleDrop = useCallback(async () => {
     if (!session || !_api) return;
+    analytics.sessionDrop();
     try { await _api.deleteSession(session.session_id); } catch {}
     setSession(null);
     setGroupFilter("all");
@@ -915,14 +932,14 @@ function App() {
           <div className="switches">
             <div className="seg" aria-label={t("theme.label")}>
               {THEMES.map((name) => (
-                <button key={name} type="button" className={theme === name ? "active" : ""} onClick={() => setTheme(name)}>
+                <button key={name} type="button" className={theme === name ? "active" : ""} onClick={() => { setTheme(name); analytics.themeChange(name); }}>
                   {t(`theme.${name}`)}
                 </button>
               ))}
             </div>
             <div className="seg" aria-label={t("lang.label")}>
               {I18N.supported().map((code) => (
-                <button key={code} type="button" className={lang === code ? "active" : ""} onClick={() => I18N.setLang(code)}>
+                <button key={code} type="button" className={lang === code ? "active" : ""} onClick={() => { I18N.setLang(code); analytics.langChange(code); }}>
                   {code.toUpperCase()}
                 </button>
               ))}

@@ -5,6 +5,7 @@
 
 import { unzipSync } from "fflate";
 import catalogData from "./catalog.json";
+import { fileDownload } from "./analytics.js";
 
 const EXPECTED_FILES = new Set([
   "conversations.json",
@@ -215,6 +216,7 @@ export function createLocalAPI(worker) {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      fileDownload(ext || "unknown", slug);
     },
   };
 }
